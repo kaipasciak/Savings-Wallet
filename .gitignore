@@ -1,0 +1,45 @@
+# Node.js and npm
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Hardhat-specific
+artifacts/
+cache/
+coverage/
+coverage.jsontypechain/
+typechain-types/
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Build and deployment outputs
+dist/
+build/
+
+# Testing and coverage reports
+test-results/
+coverage/
+
+# Hardhat network deployment artifacts
+deployments/localhost/
+deployments/hardhat/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-speciifc files
+.DS_Store
+Thumbs.db 
+
+# Logs
+logs/
+*.log
+*.log.*
