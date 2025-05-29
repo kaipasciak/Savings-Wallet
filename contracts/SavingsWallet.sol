@@ -1,4 +1,4 @@
-// SPDX-License-Identifer: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
 /**
@@ -165,7 +165,7 @@ contract SavingsWallet {
     *
     * @return uint256 of balance on the contract
     */
-    function getBalance() external onlyAliceOrBob returns (uint256) {
+    function getBalance() external view onlyAliceOrBob returns (uint256) {
         return address(this).balance;
     }
 
