@@ -97,6 +97,7 @@ describe("SavingsWallet contract", function () {
             .withArgs(bob.address, bob.address, expectedAmount);
 
     });
-    
+
     // TODO: Make sure both can withdraw any amount together
+    
 });
