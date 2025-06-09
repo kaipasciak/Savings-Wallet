@@ -52,6 +52,7 @@ contract SavingsWallet {
         require(_bob != _alice);
         alice = _alice;
         bob = _bob;
+        bobCanWithdraw = true;
     }
 
     /* Deposit ether to this contract's balance
@@ -98,7 +99,7 @@ contract SavingsWallet {
     */
     function bobWithdraw(address payable recipient) external onlyBob {
         require(recipient != address(0), "Invalid recipient address");
-        require(canWithdraw(alice), "Already withdrawn today");
+        require(canWithdraw(bob), "Already withdrawn today");
         require(bobCanWithdraw == true, "Bob cannot withdraw");
         uint256 amount = getLimit();
         lastWithdrawal[bob] = block.timestamp;
@@ -159,6 +160,14 @@ contract SavingsWallet {
     function disableBobWithdraw() external onlyAlice {
         require(bobCanWithdraw, "Bob's withdraw permissions are already disabled");
         bobCanWithdraw = false;
+    }
+
+    /* Revoke Bob's withdrawal permissions
+    *
+    */
+    function enableBobWithdraw() external onlyAlice {
+        require(bobCanWithdraw == false, "Bob's withdraw permissions are already enabled");
+        bobCanWithdraw = true;
     }
 
     /* Get contract balance

@@ -22,7 +22,7 @@ describe("SavingsWallet contract", function () {
         expect(await savingsWallet.bob()).to.equal(bob.address);
     });
 
-    it("Should only allow one withdrawal per user per day", async function () {
+    it("Should allow exactly one withdrawal per day by Alice", async function () {
         // Deposit ETH to test withdrawals and wait for event
         await expect(alice.sendTransaction({
             to: savingsWallet.getAddress(),
@@ -45,7 +45,58 @@ describe("SavingsWallet contract", function () {
 
     });
 
-    // TODO: Ensure Bob can only withdraw once per day
+    it("Should allow exactly one withdrawal per day by Bob", async function () {
+        // Deposit ETH to test withdrawals and wait for event
+        await expect(alice.sendTransaction({
+            to: savingsWallet.getAddress(),
+            value: ethers.parseEther("10"),
+        })
+        ).to.emit(savingsWallet, "Deposited")
+        .withArgs(alice.address, ethers.parseEther("10"));
+
+        // Calculate expected withdrawal amount (1% of 10 ETH = 0.1 ETH)
+        const expectedAmount = ethers.parseEther("0.1");
+
+        // Bob's first withdrawal should succeed, second should fail
+        await expect(savingsWallet.connect(bob).bobWithdraw(bob.address))
+            .to.emit(savingsWallet, "Withdrawn")
+            .withArgs(bob.address, bob.address, expectedAmount);
+
+        // Second withdrawal attempt by Bob (regardless of dest. addr.)
+        await expect(savingsWallet.connect(bob).bobWithdraw(bob.address))
+        .to.be.revertedWith("Already withdrawn today");
+
+    });
+
     // TODO: Check functionality of Alice toggling Bob's permissions
+    it("Should allow Alice to toggle Bob's withdrawal permissions", async function () {
+        // Deposit ETH to test withdrawals and wait for event
+        await expect(alice.sendTransaction({
+            to: savingsWallet.getAddress(),
+            value: ethers.parseEther("10"),
+        })
+        ).to.emit(savingsWallet, "Deposited")
+        .withArgs(alice.address, ethers.parseEther("10"));
+
+        // Set bobCanWithdraw to false through Alice's address
+        await savingsWallet.connect(alice).disableBobWithdraw();
+
+        // Bob's attempt to withdraw should be unsuccessful
+        await expect(savingsWallet.connect(bob).bobWithdraw(bob.address))
+        .to.be.revertedWith("Bob cannot withdraw");
+
+        // Set bobCanWithdraw to true 
+        await savingsWallet.connect(alice).enableBobWithdraw();
+
+        // Bob should be able to withdraw
+        const expectedAmount = ethers.parseEther("0.1");
+
+        // Bob's first withdrawal should succeed, second should fail
+        await expect(savingsWallet.connect(bob).bobWithdraw(bob.address))
+            .to.emit(savingsWallet, "Withdrawn")
+            .withArgs(bob.address, bob.address, expectedAmount);
+
+    });
+    
     // TODO: Make sure both can withdraw any amount together
 });
