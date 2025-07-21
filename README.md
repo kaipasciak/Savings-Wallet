@@ -8,7 +8,7 @@ mentioned in Ethereum's Whitepaper, which is a savings wallet. The required feat
 Alice alone can withdraw a maximum of 1% of the funds per day.
 Bob alone can withdraw a maximum of 1% of the funds per day, but Alice has the ability to make a transaction with her key shutting off this ability.
 Alice and Bob together can withdraw anything."
-(ethereum.org/en/whitepaper/)
+(ethereum.org/en/whitepaper/#alternative-blockchain-applications -- #1 in the "Further Applications" section)
 
 One simplification made is that in addition to a maximum daily withdrawal of 1% of the wallet's balance, it can only be withdrawn all at
 once.

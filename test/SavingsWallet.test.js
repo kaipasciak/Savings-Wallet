@@ -99,5 +99,8 @@ describe("SavingsWallet contract", function () {
     });
 
     // TODO: Make sure both can withdraw any amount together
+    it("Should allow Alice and Bob to withdraw any amount together", async function () {
+
+    });
     
 });
